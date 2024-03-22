@@ -138,7 +138,6 @@ def convert_subtitle_intersect(bean: SubtitleBean, output_file: str) -> bool:
     pass
 
 
-# 顺序方式处理字幕
 def convert_subtitle_order(bean: SubtitleBean, output_file: str):
     if not bean:
         return False
@@ -156,7 +155,6 @@ def convert_subtitle_order(bean: SubtitleBean, output_file: str):
 
 def check_subtitle_time_order(bean: SubtitleBean):
     global G_ORDER_TYPE_KEY, G_INTERSECT_TYPE_KEY
-    # 检查时间轴是顺序方式还是交错方式
     last_end_msec = 0
     for item in bean.get_item_list():
         if (item.begin < last_end_msec):
@@ -170,9 +168,7 @@ def convert_subtitle_ttml_to_srt(input_file: str, output_file: str, is_english: 
     bean = convert_subtitle_to_bean(input_file, is_english)
     if not bean or len(bean.get_item_list()) == 0:
         return False
-    # 检查时间轴是顺序方式还是交错方式
     order_type = check_subtitle_time_order(bean)
-    # # 根据时间轴方式，选择不同的转换代码
     if order_type == G_ORDER_TYPE_KEY:
         convert_subtitle_order(bean, output_file)
     elif order_type == G_INTERSECT_TYPE_KEY:
